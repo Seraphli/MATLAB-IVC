@@ -29,6 +29,7 @@ A video file to images
 
 + If setting changes,
 you need to clear the environment of MATLAB.
-+ You should
++ You should at least provide one parameter
+for each option.
 + If you want to use scripts outside of this folder,
 you can follow the instruction in **startup.m**.

@@ -20,7 +20,7 @@ Images to a video file
 clc;clear;
 video_opt.fps         = 20;
 frame_opt.format      = '%04d.jpg';
-fvconvert.f2v(video_opt, frame_opt);
+ivc.f2v(video_opt, frame_opt);
 ```
 
 A video file to images
@@ -33,3 +33,7 @@ you need to clear the environment of MATLAB.
 for each option.
 + If you want to use scripts outside of this folder,
 you can follow the instruction in **startup.m**.
+
+## License
+
+MATLAB-IVC is released under the [MIT license](https://github.com/Seraphli/MATLAB-IVC/blob/master/LICENSE).

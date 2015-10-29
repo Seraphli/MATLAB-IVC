@@ -10,9 +10,12 @@ function f2v(video_opt, frame_opt)
 %       frame_opt.start       = 1;
 %       frame_opt.end         = 412;
 %
-%       f2v(video_opt, frame_opt);
+%       ivc.f2v(video_opt, frame_opt);
 
   frame_opt = default_field(frame_opt, 'path', uigetdir);
+  if ~frame_opt.path
+    return;
+  end
   if frame_opt.path(end)~='\'
     frame_opt.path=[frame_opt.path,'\'];
   end

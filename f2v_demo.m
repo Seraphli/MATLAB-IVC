@@ -9,9 +9,9 @@ frame_opt.format      = '%04d.jpg';
 frame_opt.start       = 1;
 frame_opt.end         = 412;
 
-fvconvert.f2v(video_opt, frame_opt);
+ivc.f2v(video_opt, frame_opt);
 %% Example 2:
 clc;clear;
 video_opt.fps         = 20;
 frame_opt.format      = '%04d.jpg';
-fvconvert.f2v(video_opt, frame_opt);
+ivc.f2v(video_opt, frame_opt);

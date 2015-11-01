@@ -9,10 +9,11 @@ function f2v(opt)
 %       opt.F_Format    = '%04d.jpg';
 %       opt.F_Start     = 1;
 %       opt.F_End       = 412;
-% 
+%
 %       ivc.f2v(opt);
 
   opt.CheckValid();
+  opt.CountFrames();
 
   if opt.Profile
     writer_obj = VideoWriter(opt.V_Name, opt.Profile);

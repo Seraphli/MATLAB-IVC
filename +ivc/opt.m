@@ -11,12 +11,14 @@ classdef opt < handle
     Profile   = 0;
     FPS       = 30;
     F_Format  = 0;
+    Muiti     = false;
   end
 
   properties (Dependent = true)
     F_Path
     V_Name
     F_End
+    F_Count
   end
 
   methods
@@ -61,6 +63,13 @@ classdef opt < handle
       obj.f_end = f_end;
     end
 
+    function f_count = get.F_Count(obj)
+      dirs  = dir([obj.F_Path, '*.*']);
+      obj.f_count = sum(...
+        cellfun(@(x) size(sscanf(x, obj.F_Format), 1), {dirs.name}));
+      f_count = obj.f_count;
+    end
+
     function folder = GetFolderName(obj)
       index       = strfind(obj.F_Path, '\');
       folder      = obj.F_Path(...
@@ -69,24 +78,23 @@ classdef opt < handle
 
     function CheckValid(obj)
       if ~obj.F_Path
-        error('Exception:InvalidOption', 'Select a folder first!');
+        throw(MException('Exception:InvalidOption', 'Select a folder first!'));
       else
         if ~exist(obj.F_Path, 'dir')
-          error('Exception:IOError', 'Folder path doesn''t exist!');
+          throw(MException('Exception:IOError', 'Folder path doesn''t exist!'));
         end
       end
 
       if ~obj.F_Format
-        error('Exception:InvalidOption',...
-          'Please specify format string of frame files!')
-      else
-        dirs  = dir([obj.F_Path, '*.*']);
-        obj.f_count = sum(...
-          cellfun(@(x) size(sscanf(x, obj.F_Format), 1), {dirs.name}));
-        if ~obj.f_count
-          error('Exception:InvalidOption',...
-            'Please check your format string!');
-        end
+        throw(MException('Exception:InvalidOption',...
+          'Please specify format string of frame files!'));
+      end
+    end
+
+    function CountFrames(obj)
+      if ~obj.F_Count
+        throw(MException('Exception:IOError',...
+          'No valid frames in the folder!'));
       end
     end
   end

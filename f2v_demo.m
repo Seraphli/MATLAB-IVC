@@ -1,17 +1,31 @@
 %% Example 1:
+% Specify all parameter
 clc;clear;
-video_opt.name        = 'video.avi';
-video_opt.profile     = 'Motion JPEG AVI';
-video_opt.fps         = 10;
+opt = ivc.opt();
+opt.V_Name      = 'video.avi';
+opt.Profile     = 'Motion JPEG AVI';
+opt.FPS         = 10;
+opt.F_Path      = 'walking';
+opt.F_Format    = '%04d.jpg';
+opt.F_Start     = 1;
+opt.F_End       = 41;
 
-frame_opt.path        = 'walking';
-frame_opt.format      = '%04d.jpg';
-frame_opt.start       = 1;
-frame_opt.end         = 412;
-
-ivc.f2v(video_opt, frame_opt);
+ivc.f2v(opt);
 %% Example 2:
+% Select folder using a dialog
+% Auto using folder name as video name
 clc;clear;
-video_opt.fps         = 20;
-frame_opt.format      = '%04d.jpg';
-ivc.f2v(video_opt, frame_opt);
+opt = ivc.opt();
+opt.V_Name      = 'folder';
+opt.FPS         = 20;
+opt.F_Format    = '%04d.jpg';
+
+ivc.f2v(opt);
+%% Example 3:
+% Pop a save file dialog to save video file
+clc;clear;
+opt = ivc.opt();
+opt.FPS         = 20;
+opt.F_Format    = '%04d.jpg';
+
+ivc.f2v(opt);

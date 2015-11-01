@@ -14,7 +14,7 @@ Examples of converting a video file to images
 is list in **v2f_demo.m**.
 
 ## Examples
-Images to a video file
+Images convert to a video file
 
 ``` MATLAB
 clc;clear;
@@ -24,7 +24,7 @@ opt.F_Format    = '%04d.jpg';
 ivc.f2v(opt);
 ```
 
-A video file to images
+A video file convert to images
 
 ``` MATLAB
 clc;clear;

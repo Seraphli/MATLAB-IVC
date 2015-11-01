@@ -7,6 +7,7 @@ classdef opt < handle
   end
 
   properties
+    OptType   = '';
     F_Start   = 1;
     Profile   = 0;
     FPS       = 30;
@@ -24,7 +25,15 @@ classdef opt < handle
   methods
     function f_path = get.F_Path(obj)
       if isempty(obj.f_path)
-        obj.f_path = uigetdir(pwd, 'Select a folder contain frames');
+        if strcmp(obj.OptType, 'f2v')
+          str =  'Select a folder contain frames';
+        else
+          str =  'Select a folder to save frames';
+        end
+        obj.f_path = uigetdir(pwd, str);
+      end
+      if strcmp(obj.f_path, 'auto')
+        obj.f_path = obj.GetVideoName();
       end
       if ischar(obj.f_path)  && (obj.f_path(end) ~= '\')
         obj.f_path = [obj.f_path, '\'];
@@ -36,16 +45,24 @@ classdef opt < handle
     end
 
     function name = get.V_Name(obj)
-      if strcmp(obj.v_name, 'input')
-        obj.v_name = uiputfile(...
-          {'*.avi;*.mj2;*.mp4;*.m4v','All Support Files'},...
-          'Save as');
-        if ~obj.v_name
+      if strcmp(obj.OptType, 'f2v')
+        if strcmp(obj.v_name, 'input')
+          obj.v_name = uiputfile(...
+            {'*.avi;*.mj2;*.mp4;*.m4v','All Supported Files'},...
+            'Save as');
+          if ~obj.v_name
+            obj.v_name  = [obj.GetFolderName() '.avi'];
+          end
+        end
+        if strcmp(obj.v_name, 'folder')
           obj.v_name  = [obj.GetFolderName() '.avi'];
         end
-      end
-      if strcmp(obj.v_name, 'folder')
-        obj.v_name  = [obj.GetFolderName() '.avi'];
+      else
+        if strcmp(obj.v_name, 'input')
+          obj.v_name = uigetfile(...
+            {'*.avi;*.mj2;*.mp4;*.m4v','All Supported Files'},...
+            'Select a video file');
+        end
       end
       name = obj.v_name;
     end
@@ -71,17 +88,55 @@ classdef opt < handle
     end
 
     function folder = GetFolderName(obj)
-      index       = strfind(obj.F_Path, '\');
-      folder      = obj.F_Path(...
+      index   = strfind(obj.F_Path, '\');
+      folder  = obj.F_Path(...
         index(end - 1) + 1 : index(end) - 1);
     end
 
-    function CheckValid(obj)
-      if ~obj.F_Path
-        throw(MException('Exception:InvalidOption', 'Select a folder first!'));
+    function name = GetVideoName(obj)
+      index1   = strfind(obj.V_Name, '\');
+      index2   = strfind(obj.V_Name, '.');
+      if isempty(index1)
+        name    = obj.V_Name(...
+          1 : index2(1) - 1);
       else
-        if ~exist(obj.F_Path, 'dir')
-          throw(MException('Exception:IOError', 'Folder path doesn''t exist!'));
+        name    = obj.V_Name(...
+          index1(end - 1) + 1 : index2(1) - 1);
+      end
+    end
+
+    function CheckValid(obj)
+      if strcmp(obj.OptType, 'f2v')
+
+        if ~obj.F_Path
+          throw(MException('Exception:InvalidOption',...
+            'Select a folder first!'));
+        else
+          if ~exist(obj.F_Path, 'dir')
+            throw(MException('Exception:IOError',...
+              'Folder path doesn''t exist!'));
+          end
+        end
+
+      else
+
+        if ~obj.V_Name
+          throw(MException('Exception:InvalidOption',...
+            'Select a video file first!'));
+        else
+          if ~exist(obj.V_Name, 'file')
+            throw(MException('Exception:IOError',...
+              'The video file doesn''t exist!'));
+          end
+        end
+
+        if ~obj.F_Path
+          throw(MException('Exception:InvalidOption',...
+            'Select a folder first!'));
+        else
+          if ~exist(obj.F_Path, 'dir')
+            mkdir(obj.F_Path);
+          end
         end
       end
 

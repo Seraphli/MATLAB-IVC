@@ -26,6 +26,13 @@ ivc.f2v(opt);
 
 A video file to images
 
+``` MATLAB
+clc;clear;
+opt = ivc.opt();
+opt.F_Format  = '%04d.jpg';
+ivc.v2f(opt);
+```
+
 ## Notice
 
 + If setting changes,

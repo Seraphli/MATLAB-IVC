@@ -1,17 +1,18 @@
 function f2v(opt)
 %F2V Create a new video file from frames
-%   Example
-%       opt = ivc.opt();
-%       opt.V_Name      = 'video.avi';
-%       opt.Profile     = 'Motion JPEG AVI';
-%       opt.FPS         = 10;
-%       opt.F_Path      = 'walking';
-%       opt.F_Format    = '%04d.jpg';
-%       opt.F_Start     = 1;
-%       opt.F_End       = 412;
+%  Example
+%    opt = ivc.opt();
+%    opt.V_Name      = 'video.avi';
+%    opt.Profile     = 'Motion JPEG AVI';
+%    opt.FPS         = 10;
+%    opt.F_Path      = 'walking';
+%    opt.F_Format    = '04d.jpg';
+%    opt.F_Start     = 1;
+%    opt.F_End       = 412;
 %
-%       ivc.f2v(opt);
+%    ivc.f2v(opt);
 
+  opt.OptType = 'f2v';
   opt.CheckValid();
   opt.CountFrames();
 

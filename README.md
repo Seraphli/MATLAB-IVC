@@ -8,10 +8,10 @@ Scripts is developed to be used in MATLAB.
 Please read demo scripts before using these code.
 
 Examples of converting images to a video file
-is list in **f2v_demo.m**.
+is listed in **f2v_demo.m**.
 
 Examples of converting a video file to images
-is list in **v2f_demo.m**.
+is listed in **v2f_demo.m**.
 
 ## Examples
 Images convert to a video file

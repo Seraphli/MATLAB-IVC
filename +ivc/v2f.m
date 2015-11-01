@@ -5,8 +5,8 @@ function v2f(opt)
 %     opt.V_Name    = 'video.avi';
 %     opt.F_Path    = 'walking2';
 %     opt.F_Format  = '%04d.jpg';
+%     ivc.v2f(opt);
 
-  ivc.v2f(opt);
   opt.OptType = 'v2f';
   opt.CheckValid();
 

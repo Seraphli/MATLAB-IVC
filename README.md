@@ -18,9 +18,10 @@ Images to a video file
 
 ``` MATLAB
 clc;clear;
-video_opt.fps         = 20;
-frame_opt.format      = '%04d.jpg';
-ivc.f2v(video_opt, frame_opt);
+opt = ivc.opt();
+opt.FPS         = 20;
+opt.F_Format    = '%04d.jpg';
+ivc.f2v(opt);
 ```
 
 A video file to images

@@ -9,27 +9,43 @@ function f2v(opt)
 %    opt.F_Format    = '04d.jpg';
 %    opt.F_Start     = 1;
 %    opt.F_End       = 412;
-%
 %    ivc.f2v(opt);
 
   opt.OptType = 'f2v';
-  opt.CheckValid();
-  opt.CountFrames();
 
-  if opt.Profile
-    writer_obj = VideoWriter(opt.V_Name, opt.Profile);
+  if opt.Multi
+    code_path = pwd;
+    addpath(code_path);
+    cd(opt.F_Path);
+    dirs = opt.FindSubFolder();
+    for i = 1 : size(dirs, 1)
+      tmp_opt = ivc.opt();
+      tmp_opt.F_Path    = [opt.F_Path dirs(i).name '\'];
+      tmp_opt.F_Format  = opt.F_Format;
+      tmp_opt.FPS       = opt.FPS;
+      tmp_opt.V_Name    = opt.V_Name;
+      ivc.f2v(tmp_opt);
+    end
+    cd(code_path);
   else
-    writer_obj = VideoWriter(opt.V_Name);
+    opt.CheckValid();
+    opt.CountFrames();
+
+    if opt.Profile
+      writer_obj = VideoWriter(opt.V_Name, opt.Profile);
+    else
+      writer_obj = VideoWriter(opt.V_Name);
+    end
+
+    writer_obj.FrameRate  = opt.FPS;
+
+    open(writer_obj);
+    for i = opt.F_Start : opt.F_End
+      frame_fn    = sprintf(opt.F_Format, i);
+      frame       = imread([opt.F_Path, frame_fn]);
+      writeVideo(writer_obj, frame);
+    end
+
+    close(writer_obj);
   end
-
-  writer_obj.FrameRate  = opt.FPS;
-
-  open(writer_obj);
-  for i = opt.F_Start : opt.F_End
-    frame_fn    = sprintf(opt.F_Format, i);
-    frame       = imread([opt.F_Path, frame_fn]);
-    writeVideo(writer_obj, frame);
-  end
-
-  close(writer_obj);
 end

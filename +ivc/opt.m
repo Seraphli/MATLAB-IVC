@@ -1,7 +1,7 @@
 classdef opt < handle
   properties (Access = private)
-    f_path    = '';
-    v_name    = 'input';
+    f_path    = 'auto';
+    v_name    = 'folder';
     f_end     = 0;
     f_count   = 0;
   end
@@ -12,7 +12,7 @@ classdef opt < handle
     Profile   = 0;
     FPS       = 30;
     F_Format  = 0;
-    Muiti     = false;
+    Multi     = false;
   end
 
   properties (Dependent = true)
@@ -24,15 +24,23 @@ classdef opt < handle
 
   methods
     function f_path = get.F_Path(obj)
-      if isempty(obj.f_path)
-        if strcmp(obj.OptType, 'f2v')
-          str =  'Select a folder contain frames';
+      if strcmp(obj.f_path, 'select')
+        if obj.Multi
+          if strcmp(obj.OptType, 'f2v')
+            str =  'Select a folder contain multiple folders';
+          else
+            str =  'Select a folder contain multiple files';
+          end
         else
-          str =  'Select a folder to save frames';
+          if strcmp(obj.OptType, 'f2v')
+            str =  'Select a folder contain frames';
+          else
+            str =  'Select a folder to save frames';
+          end
         end
         obj.f_path = uigetdir(pwd, str);
       end
-      if strcmp(obj.f_path, 'auto')
+      if strcmp(obj.f_path, 'auto') && ~obj.Multi
         obj.f_path = obj.GetVideoName();
       end
       if ischar(obj.f_path)  && (obj.f_path(end) ~= '\')
@@ -46,16 +54,18 @@ classdef opt < handle
 
     function name = get.V_Name(obj)
       if strcmp(obj.OptType, 'f2v')
-        if strcmp(obj.v_name, 'input')
-          obj.v_name = uiputfile(...
-            {'*.avi;*.mj2;*.mp4;*.m4v','All Supported Files'},...
-            'Save as');
-          if ~obj.v_name
+        if ~obj.Multi
+          if strcmp(obj.v_name, 'input')
+            obj.v_name = uiputfile(...
+              {'*.avi;*.mj2;*.mp4;*.m4v','All Supported Files'},...
+              'Save as');
+            if ~obj.v_name
+              obj.v_name  = [obj.GetFolderName() '.avi'];
+            end
+          end
+          if strcmp(obj.v_name, 'folder')
             obj.v_name  = [obj.GetFolderName() '.avi'];
           end
-        end
-        if strcmp(obj.v_name, 'folder')
-          obj.v_name  = [obj.GetFolderName() '.avi'];
         end
       else
         if strcmp(obj.v_name, 'input')
@@ -86,7 +96,9 @@ classdef opt < handle
         cellfun(@(x) size(sscanf(x, obj.F_Format), 1), {dirs.name}));
       f_count = obj.f_count;
     end
+  end
 
+  methods
     function folder = GetFolderName(obj)
       index   = strfind(obj.F_Path, '\');
       folder  = obj.F_Path(...
@@ -103,6 +115,23 @@ classdef opt < handle
         name    = obj.V_Name(...
           index1(end - 1) + 1 : index2(1) - 1);
       end
+    end
+
+    function dirs = FindSubFolder(obj)
+      dirs = dir(obj.F_Path);
+      dirs = dirs(cellfun(@(x) isequal(x, 1), {dirs(:).isdir}));
+      dirs = dirs(~cellfun(...
+        @(x) strcmp(x, '.')||strcmp(x, '..'), {dirs(:).name}));
+    end
+
+    function files = FindFiles(obj)
+      files = dir(obj.F_Path);
+      files = files(cellfun(@(x) isequal(x, 0), {files(:).isdir}));
+      f = @(x) strfind(x, '.avi')...
+        || strfind(x, '.mj2')...
+        || strfind(x, '.mp4')...
+        || strfind(x, '.m4v');
+      files = files(cellfun(f, {files(:).name}));
     end
 
     function CheckValid(obj)

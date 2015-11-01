@@ -16,7 +16,6 @@ ivc.f2v(opt);
 % Auto using folder name as video name
 clc;clear;
 opt = ivc.opt();
-opt.V_Name      = 'folder';
 opt.FPS         = 20;
 opt.F_Format    = '%04d.jpg';
 
@@ -25,7 +24,17 @@ ivc.f2v(opt);
 % Pop a save file dialog to save video file
 clc;clear;
 opt = ivc.opt();
+opt.V_Name      = 'input';
 opt.FPS         = 20;
 opt.F_Format    = '%04d.jpg';
+
+ivc.f2v(opt);
+%% Example 4:
+% Select a folder contain multiple folders
+% e.g. ./another_path/image_seq
+clc;clear;
+opt = ivc.opt();
+opt.Multi     = true;
+opt.F_Format  = '%04d.jpg';
 
 ivc.f2v(opt);

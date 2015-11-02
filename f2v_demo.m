@@ -16,6 +16,7 @@ ivc.f2v(opt);
 % Auto using folder name as video name
 clc;clear;
 opt = ivc.opt();
+opt.F_Path      = 'select';
 opt.FPS         = 20;
 opt.F_Format    = '%04d.jpg';
 
@@ -24,6 +25,7 @@ ivc.f2v(opt);
 % Pop a save file dialog to save video file
 clc;clear;
 opt = ivc.opt();
+opt.F_Path      = 'select';
 opt.V_Name      = 'input';
 opt.FPS         = 20;
 opt.F_Format    = '%04d.jpg';

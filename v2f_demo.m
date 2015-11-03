@@ -13,6 +13,7 @@ ivc.v2f(opt);
 % Auto using video name as folder name
 clc;clear;
 opt = ivc.opt();
+opt.V_Name    = 'input';
 opt.F_Format  = '%04d.jpg';
 
 ivc.v2f(opt);

@@ -43,8 +43,8 @@ classdef opt < handle
       if strcmp(obj.f_path, 'auto') && ~obj.Multi
         obj.f_path = obj.GetVideoName();
       end
-      if ischar(obj.f_path)  && (obj.f_path(end) ~= '\')
-        obj.f_path = [obj.f_path, '\'];
+      if ischar(obj.f_path)  && (obj.f_path(end) ~= filesep)
+        obj.f_path = [obj.f_path, filesep];
       end
       f_path = obj.f_path;
     end
@@ -100,13 +100,13 @@ classdef opt < handle
 
   methods
     function folder = GetFolderName(obj)
-      index   = strfind(obj.F_Path, '\');
+      index   = strfind(obj.F_Path, filesep);
       folder  = obj.F_Path(...
         index(end - 1) + 1 : index(end) - 1);
     end
 
     function name = GetVideoName(obj)
-      index1   = strfind(obj.V_Name, '\');
+      index1   = strfind(obj.V_Name, filesep);
       index2   = strfind(obj.V_Name, '.');
       if isempty(index1)
         name    = obj.V_Name(...

@@ -19,6 +19,7 @@ Images convert to a video file
 ``` MATLAB
 clc;clear;
 opt = ivc.opt();
+opt.F_Path      = 'select';
 opt.FPS         = 20;
 opt.F_Format    = '%04d.jpg';
 ivc.f2v(opt);
@@ -29,6 +30,7 @@ A video file convert to images
 ``` MATLAB
 clc;clear;
 opt = ivc.opt();
+opt.V_Name    = 'input';
 opt.F_Format  = '%04d.jpg';
 ivc.v2f(opt);
 ```

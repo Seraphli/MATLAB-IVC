@@ -21,6 +21,7 @@ ivc.v2f(opt);
 % Select folder using a dialog
 clc;clear;
 opt = ivc.opt();
+opt.V_Name    = 'input';
 opt.F_Path    = 'select';
 opt.F_Format  = '%04d.jpg';
 

@@ -41,6 +41,7 @@ function f2v(opt)
 
     open(writer_obj);
     hwait = waitbar(0, ['Generate video ', opt.V_Name]);
+    set(findall(hwait, 'type', 'text'), 'Interpreter', 'none');
     for i = opt.F_Start : opt.F_End
       h = tic;
       frame_fn    = sprintf(opt.F_Format, i);
@@ -50,10 +51,10 @@ function f2v(opt)
       minute = floor(time / 60);
       second = ceil(time - 60 * minute);
       PerStr = fix(i * 100 / (opt.F_End - opt.F_Start + 1));
-      str = [opt.V_Name,...
-          ' | ', 'Frame ', num2str(i),...
-          ' | ', num2str(PerStr), '% Completed',...
-          ' | ', num2str(minute), ':', num2str(second), ' Remain'];
+      str = {[opt.V_Name,...
+          ' | ', 'Frame ', num2str(i)],...
+          [num2str(PerStr), '% Completed',...
+          ' | ', num2str(minute), ':', num2str(second), ' Remain']};
       waitbar(i / (opt.F_End-opt.F_Start), hwait, str);
     end
     close(hwait);

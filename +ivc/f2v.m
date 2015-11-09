@@ -40,12 +40,18 @@ function f2v(opt)
     writer_obj.FrameRate  = opt.FPS;
 
     open(writer_obj);
+    hwait = waitbar(0, ['Generate video ', opt.V_Name]);
     for i = opt.F_Start : opt.F_End
       frame_fn    = sprintf(opt.F_Format, i);
       frame       = imread([opt.F_Path, frame_fn]);
       writeVideo(writer_obj, frame);
+      PerStr = fix(i * 100 / (opt.F_End - opt.F_Start + 1));
+      str = [opt.V_Name,...
+          ' | ', 'Frame ', num2str(i),...
+          ' | ', num2str(PerStr), '% Completed'];
+      waitbar(i / (opt.F_End-opt.F_Start), hwait, str);
     end
-
+    close(hwait);
     close(writer_obj);
   end
 end
